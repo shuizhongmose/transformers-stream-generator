@@ -4,11 +4,22 @@ from transformers import (
     LogitsProcessorList,
     StoppingCriteriaList,
     DisjunctiveConstraint,
-    BeamSearchScorer,
     PhrasalConstraint,
-    ConstrainedBeamSearchScorer,
     PreTrainedModel,
 )
+try:
+    from transformers.generation.beam_search import (
+        BeamSearchScorer,
+        ConstrainedBeamSearchScorer,
+    )
+except ImportError:
+    try:
+        from transformers.generation import (
+            BeamSearchScorer,
+            ConstrainedBeamSearchScorer,
+        )
+    except ImportError:  # pragma: no cover - for backwards compatibility with old Transformers
+        from transformers import BeamSearchScorer, ConstrainedBeamSearchScorer
 import numpy as np
 import random
 import warnings
